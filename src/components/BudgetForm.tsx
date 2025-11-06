@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 export default function BudgetForm() {
   // * Requerimos estado inicial para validar formulario y si pasa la validacion, escribimos en nuestro useReducer:
@@ -10,6 +10,13 @@ export default function BudgetForm() {
     // console.log(e.target.valueAsNumber)
     setBudget(+e.target.value) // * Equivalente a e.target.valueAsNumber
   }
+
+  // ! Metodo 2.- Se usa cuando unicamente el usuario esta escribiendo
+  const isValid = useMemo(() => {
+    // console.log(budget) // * SI borramos el numero (queda string) marca NaN
+    // console.log(isNaN(budget)) // * 20, 40 -> False, porque SI es numero | '' -> TRUE porque NO es numero
+    return isNaN(budget) || budget <= 0
+  }, [budget]) // * Cada que budget cambie, queremos revisar esta funcion
   
   return (
     <form action="" className="space-y-5">
@@ -32,7 +39,8 @@ export default function BudgetForm() {
       <input
         type="submit"
         value='Definir Presupuesto'
-        className="bg-blue-600 hover:bg-blue-700 cursor-pointer w-full p-2 text-white font-black uppercase"
+        className="bg-blue-600 hover:bg-blue-700 cursor-pointer w-full p-2 text-white font-black uppercase disabled:opacity-40 disabled:cursor-not-allowed"
+        disabled={isValid}
         />
     </form>
   )
