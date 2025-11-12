@@ -11,7 +11,8 @@ export type BudgetState = {
 
 // ! 3.- STATE INICIAL para cada Presupuesto o Budget
 export const initialState: BudgetState = {
-  budget: 0
+  budget: 0,
+  // auth: true // * Ejemplo al mostrar el console.log del state del CustomHook
 }
 
 // ! 4.- Reducer:
