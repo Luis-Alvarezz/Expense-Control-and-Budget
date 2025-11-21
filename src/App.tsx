@@ -1,7 +1,16 @@
 import BudgetForm from "./components/BudgetForm"
+import BudgetTracker from "./components/BudgetTracker"
+import ExpenseList from "./components/ExpenseList"
+import ExpenseModal from "./components/ExpenseModal"
+import { useBudget } from "./hooks/useBudget"
+import { useMemo } from "react"
 
 
 function App() {
+  const { state } = useBudget() // * STATE -> Para acceder a los datos | DISPATCH -> Para escribir en el STATE
+  // console.log(state.budget)
+
+  const isValidBudget = useMemo(() => state.budget > 0 , [state.budget])
 
   return (
     <>
@@ -10,8 +19,20 @@ function App() {
       </header>
 
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg mt-10 p-10">
-        <BudgetForm />
+        {
+          isValidBudget ? <BudgetTracker />  : <BudgetForm /> 
+        }
       </div>
+
+      {
+        isValidBudget && ( // ! TERNARIO CUANDO ES TRUE LA CONDICION
+          <main className="max-w-3xl mx-auto py-10">
+            {/* Gastos y Filtrados por dia */}
+            <ExpenseList />
+            <ExpenseModal /> 
+          </main> 
+      ) 
+      }
     </>
   )
 }
