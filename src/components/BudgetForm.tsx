@@ -3,21 +3,24 @@ import { useBudget } from "../hooks/useBudget"
 
 export default function BudgetForm() {
   // * Requerimos estado inicial para validar formulario y si pasa la validacion, escribimos en nuestro useReducer:
-  const [budget, setBudget] = useState(0)
+  const [budget, setBudget] = useState<string>('')
   const { dispatch } = useBudget() // * useReducer retornaba [state, dispatch], pero el customHook retorna {state, dispatch}
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(e.target.name)
     // console.log(e.target.id)
     // console.log(e.target.valueAsNumber)
-    setBudget(+e.target.value) // * Equivalente a e.target.valueAsNumber
+    // setBudget(+e.target.value) // * Equivalente a e.target.valueAsNumbere
+    setBudget(e.target.value) // * Equivalente a e.target.valueAsNumber
+    // console.log(e.target.value)
   }
 
   // ! Metodo 2.- Se usa cuando unicamente el usuario esta escribiendo
   const isValid = useMemo(() => {
     // console.log(budget) // * SI borramos el numero (queda string) marca NaN
     // console.log(isNaN(budget)) // * 20, 40 -> False, porque SI es numero | '' -> TRUE porque NO es numero
-    return isNaN(budget) || budget <= 0
+    const num = Number(budget)
+    return isNaN(num) || num <= 0
   }, [budget]) // * Cada que budget cambie, queremos revisar esta funcion
 
   // ! Método 3.- Envio de Formulario 
@@ -26,7 +29,7 @@ export default function BudgetForm() {
     // console.log('Añadir o Definir Presupuesto')
 
     // TODO - Usamos el dispach
-    dispatch({type: 'add-budget', payload: {budget}})
+    dispatch({type: 'add-budget', payload: {budget: Number(budget)}})
   }
   
   return (
@@ -44,6 +47,7 @@ export default function BudgetForm() {
           name="budget" 
           value={budget}
           onChange={handleChange}
+          min= "-2"
         />
       </div>
 
