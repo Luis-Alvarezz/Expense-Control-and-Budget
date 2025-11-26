@@ -3,7 +3,7 @@ import BudgetTracker from "./components/BudgetTracker"
 import ExpenseList from "./components/ExpenseList"
 import ExpenseModal from "./components/ExpenseModal"
 import { useBudget } from "./hooks/useBudget"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 
 
 function App() {
@@ -11,6 +11,12 @@ function App() {
   // console.log(state.budget)
 
   const isValidBudget = useMemo(() => state.budget > 0 , [state.budget])
+
+  // ! Almacenamiento en LocalStorage
+  useEffect(() => {
+    localStorage.setItem('expenses', JSON.stringify(state.expenses)) // * convertimos el array de 'expenses' en una cadena de texto para poder guardarlo en localStorage
+    localStorage.setItem('budget', state.budget.toString())
+  }, [state]) // * Escuchamos por 'state.expenses' para que se dispare la accion cada que se agregen o editen GASTOS en el STATE.
 
   return (
     <>
