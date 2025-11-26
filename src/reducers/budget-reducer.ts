@@ -9,7 +9,8 @@ export type BudgetActions =
  { type: 'close-modal' } |
  { type: 'add-expense', payload: { expense: DraftExpense} } | // * El ID se genera en el reducer
  { type: 'delete-expense', payload: { id: Expense['id']} } |
- { type: 'get-expenseById', payload: { id: Expense['id'] } }
+ { type: 'get-expenseById', payload: { id: Expense['id'] } } |
+ { type: 'update-expense', payload: { expense: Expense} }
 
 //  ! 2.- TYPE
 export type BudgetState = {
@@ -54,7 +55,8 @@ export const budgetReducer = ( state: BudgetState = initialState, action: Budget
   if (action.type === 'close-modal') {
     return {
     ...state,
-    modal: false  
+    modal: false,
+    editingId: ''
     }
   }
 
@@ -84,6 +86,16 @@ export const budgetReducer = ( state: BudgetState = initialState, action: Budget
       ...state,
       editingId: action.payload.id,
       modal: true
+    }
+  }
+
+  if (action.type === 'update-expense') {
+    // console.log('Actualizando...')
+    return {
+      ...state,
+      expenses: state.expenses.map( expense => expense.id === action.payload.expense.id ? action.payload.expense : expense),
+      modal: false,
+      editingId: ''
     }
   }
 

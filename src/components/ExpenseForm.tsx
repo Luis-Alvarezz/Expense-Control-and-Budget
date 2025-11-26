@@ -60,9 +60,17 @@ export default function ExpenseForm() {
       setError('Todos los campos son obligatorios')
       return
     }
+    
     // console.log('Todo bien...')
-    // ! Agregar un nuevo gasto
-    dispatch({ type: 'add-expense', payload: { expense }})
+    // ! Agregar o actualizar el gasto
+    if (state.editingId) {
+      dispatch({ type: 'update-expense', payload: { expense:  {id: state.editingId, ...expense } } })
+      // * el expense que pasamos es del TYPE 'DraftExpense' es decir, sin ID. Debemos recuperarlo y eso
+      // * viene del STATE el ID que estamos editando en 'editingId' y mantiene copia del STATE como resto del GASTO
+    } else {
+      // ! Agregar un nuevo gasto
+      dispatch({ type: 'add-expense', payload: { expense }})
+    }
 
     // ! Reiniciar el STATE
     setExpense({
