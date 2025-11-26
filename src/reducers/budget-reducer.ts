@@ -9,13 +9,14 @@ export type BudgetActions =
  { type: 'close-modal' } |
  { type: 'add-expense', payload: { expense: DraftExpense} } | // * El ID se genera en el reducer
  { type: 'delete-expense', payload: { id: Expense['id']} } |
- { type: 'update-expense', payload: {id: Expense['id']}, expense: Expense }
+ { type: 'get-expenseById', payload: { id: Expense['id'] } }
 
-//  ! 2.- STATE
+//  ! 2.- TYPE
 export type BudgetState = {
   budget: number
   modal: boolean
-  expenses: Expense[]
+  expenses: Expense[],
+  editingId: Expense['id']
 }
 
 // ! 3.- STATE INICIAL para cada Presupuesto o Budget
@@ -23,7 +24,8 @@ export const initialState: BudgetState = {
   budget: 0,
   // auth: true // * Ejemplo al mostrar el console.log del state del CustomHook
   modal: false,
-  expenses: []
+  expenses: [],
+  editingId: ''
 }
 
 const createExpense = (draftExpense: DraftExpense) : Expense => {
@@ -75,10 +77,13 @@ export const budgetReducer = ( state: BudgetState = initialState, action: Budget
     }
   }
 
-  if (action.type === 'update-expense') {
-    console.log('Actualizando...')
+  if (action.type === 'get-expenseById') {
+    // console.log('Actualizando...')
+
     return {
-      ...state
+      ...state,
+      editingId: action.payload.id,
+      modal: true
     }
   }
 
