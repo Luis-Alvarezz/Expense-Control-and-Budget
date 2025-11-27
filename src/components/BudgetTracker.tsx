@@ -1,7 +1,21 @@
 import AmountDisplay from "./AmountDisplay";
+import { useBudget } from "../hooks/useBudget";
+import { useMemo } from "react";
+import type { BudgetState } from "../reducers/budget-reducer";
 
+// ! Calcular el gasto Disponible (forma de CustomHoook Encapzsulado)
+ function useReminingBudget(state: BudgetState, totalExpenses: number) {
+  return useMemo(() => {
+    return state.budget - totalExpenses
+  }, [state.budget, totalExpenses] )
+}
 
 export default function BudgetTracker() {
+  const { state } = useBudget()
+
+  // ! Calcular el gasto usado:
+  const totalExpenses = useMemo(() => state.expenses.reduce((total, expense) => Number(expense.amount) + total, 0) , [state.expenses])
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <div className="flex justify-center">
@@ -19,17 +33,17 @@ export default function BudgetTracker() {
 
         <AmountDisplay 
           label="Presupuesto"
-          amount={300}
+          amount={state.budget}
         />
 
         <AmountDisplay 
           label="Disponible"
-          amount={200}
+          amount={useReminingBudget(state, totalExpenses)}
         />
 
         <AmountDisplay 
           label="Gastado"
-          amount={100}
+          amount={totalExpenses}
         />
       </div>
     </div>
