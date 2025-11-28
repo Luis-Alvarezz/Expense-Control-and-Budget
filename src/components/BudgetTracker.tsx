@@ -5,7 +5,7 @@ import "react-circular-progressbar/dist/styles.css"
 
 
 export default function BudgetTracker() {
-  const { state, totalExpenses, reminingBudget } = useBudget()
+  const { state, totalExpenses, reminingBudget, dispatch } = useBudget()
 
   const percentage = +((totalExpenses / state.budget) * 100).toFixed(2) // * + Para convertir de STRING a NUMERO |  MAX 2 Decimales
   console.log(percentage)
@@ -31,6 +31,7 @@ export default function BudgetTracker() {
         <button
           type="button"
           className="bg-pink-600 w-full p-2 text-white uppercase font-bold rounded-lg"
+          onClick={() => dispatch({type: 'reset-app'})}
         >
           Reset App
         </button>
