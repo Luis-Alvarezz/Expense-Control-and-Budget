@@ -16,11 +16,13 @@ export default function ExpenseForm() {
     expenseName: '',
     category: '',
     date: new Date()
-  }
-  )
+  })
 
   const [error, setError] = useState('')
-  const { dispatch, state } = useBudget()
+  const { dispatch, state, reminingBudget } = useBudget()
+  const [previousAmount, setpreviousAmount] = useState<Number>(0)
+
+  // ! 3. Manejar el sobrecargo de presupuesto
   
   // ! LLENAR EL FORMULARIO DEL GASTO SELECCIONADO.
   useEffect(() => {
@@ -28,6 +30,8 @@ export default function ExpenseForm() {
       const editingExpense = state.expenses.filter( currentExpense => currentExpense.id === state.editingId)[0]
       // * Regresamos de Global a Local:
       setExpense(editingExpense)
+
+      setpreviousAmount(Number(editingExpense.amount))
     }
   }, [state.editingId]) // * Dependencia 'editingId' para leer cada cambio de estado en ese campo
 
@@ -60,6 +64,13 @@ export default function ExpenseForm() {
       setError('Todos los campos son obligatorios')
       return
     }
+
+    // ! Validar que no me pase del liminte
+    if ((Number(expense.amount) - Number(previousAmount)) > reminingBudget) {
+
+      setError('Ese gasto supera al presupuesto inicial')
+      return
+    }
     
     // console.log('Todo bien...')
     // ! Agregar o actualizar el gasto
@@ -79,6 +90,8 @@ export default function ExpenseForm() {
       category: '',
       date: new Date()
     }) // * Se reinicia con exito porque tenemos los value={expense.STATE}
+
+    setpreviousAmount(0)
   }
 
   return (
