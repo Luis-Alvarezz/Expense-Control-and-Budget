@@ -20,7 +20,7 @@ export default function ExpenseForm() {
 
   const [error, setError] = useState('')
   const { dispatch, state, reminingBudget } = useBudget()
-  const [previousAmount, setpreviousAmount] = useState<Number>(0)
+  const [previousAmount, setpreviousAmount] = useState<number>(0)
 
   // ! 3. Manejar el sobrecargo de presupuesto
   
@@ -33,7 +33,7 @@ export default function ExpenseForm() {
 
       setpreviousAmount(Number(editingExpense.amount))
     }
-  }, [state.editingId]) // * Dependencia 'editingId' para leer cada cambio de estado en ese campo
+  }, [state.editingId, state.expenses]) // * Dependencia 'editingId' para leer cada cambio de estado en ese campo
 
   // ! Escribir sobre el STATE sobre el campo 'Fecha de Gasto' Mediante Dependencia de Calendario
   const handleChangeDate = (value: Value) => {
