@@ -8,7 +8,7 @@ export default function ExpenseList() {
 
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 bg-white shadow-lg rounded-lg p-10">
       {
         isEmpty ? <p className="text-red-600 text-2xl font-bold text-center">No hay gastos</p> : (
           <>
