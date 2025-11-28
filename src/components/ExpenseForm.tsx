@@ -65,9 +65,8 @@ export default function ExpenseForm() {
       return
     }
 
-    // ! Validar que no me pase del liminte
-    if ((Number(expense.amount) - Number(previousAmount)) > reminingBudget) {
-
+    // ! Validar que no me pase del limite
+    if ((Number(expense.amount) - Number(previousAmount)) > reminingBudget) { // * Nueva cantidad (p-.je) 300 - la anterior (p.je) 250 -> 50 es > a disponible (p.ej) 60 | Si se cambia y queda disponible $10
       setError('Ese gasto supera al presupuesto inicial')
       return
     }
